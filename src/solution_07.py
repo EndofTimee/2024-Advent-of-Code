@@ -10,17 +10,60 @@ import itertools
 import collections
 import math
 
+def evaluate_expression(numbers, operators):
+    result = numbers[0]
+    for i in range(1, len(numbers)):
+        if operators[i-1] == '+':
+            result += numbers[i]
+        elif operators[i-1] == '*':
+            result *= numbers[i]
+        elif operators[i-1] == '||':
+            result = int(str(result) + str(numbers[i]))
+    return result
+
 def problem1(input: str) -> int | str:
     output: int = 0
     lines = utils.read_lines(input)
-    # Add your solution logic here
+    
+    for line in lines:
+        test_value, numbers = line.split(':')
+        test_value = int(test_value.strip())
+        numbers = list(map(int, numbers.strip().split()))
+        
+        # Generate all possible combinations of operators
+        operators = ['+', '*']
+        possible = False
+        
+        for ops in itertools.product(operators, repeat=len(numbers)-1):
+            if evaluate_expression(numbers, ops) == test_value:
+                possible = True
+                break
+        
+        if possible:
+            output += test_value
     
     return output
 
 def problem2(input: str) -> int | str:
     output: int = 0
     lines = utils.read_lines(input)
-    # Add your solution logic here
+    
+    for line in lines:
+        test_value, numbers = line.split(':')
+        test_value = int(test_value.strip())
+        numbers = list(map(int, numbers.strip().split()))
+        
+        # Generate all possible combinations of operators including concatenation
+        operators = ['+', '*', '||']
+        possible = False
+        
+        for ops in itertools.product(operators, repeat=len(numbers)-1):
+            if evaluate_expression(numbers, ops) == test_value:
+                possible = True
+                break
+        
+        if possible:
+            output += test_value
     
     return output
 

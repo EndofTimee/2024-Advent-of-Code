@@ -44,9 +44,11 @@ def problem2(input: str) -> int | str:
     output: int = 0
     lines = utils.read_lines(input)
     
-    pattern = [
+    patterns = [
         [(0, 0), (1, -1), (1, 1), (2, -2), (2, 2)],  # MAS in X shape
         [(0, 0), (1, 1), (1, -1), (2, 2), (2, -2)],  # MAS in X shape (mirrored)
+        [(0, 0), (1, -1), (1, 1), (2, 2), (2, -2)],  # MAS in X shape (rotated)
+        [(0, 0), (1, 1), (1, -1), (2, -2), (2, 2)]   # MAS in X shape (rotated and mirrored)
     ]
     
     def is_valid(x, y):
@@ -61,11 +63,13 @@ def problem2(input: str) -> int | str:
                 return False
             if (dx, dy) in [(1, -1), (1, 1)] and lines[nx][ny] != 'A':
                 return False
+            if (dx, dy) in [(2, -2), (2, 2)] and lines[nx][ny] != 'S':
+                return False
         return True
     
     for i in range(len(lines)):
         for j in range(len(lines[0])):
-            for pat in pattern:
+            for pat in patterns:
                 if search_pattern(i, j, pat):
                     output += 1
     
